@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from oms.quizhub.views import hello_world
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("test/", hello_world, name="hello_world"),
 ]
