@@ -1,3 +1,22 @@
-from django.shortcuts import render
+from django.views import View
+from django.http import HttpResponse
 
-# Create your views here.
+class RequestExplorerView(View):
+    def get(self, request):
+    # query params: /shop/products/request -info/?page=2&order=desc
+        query_params = dict(request.GET)
+        method = request.method
+        path = request.path
+        user = request.user.username if request.user.is_authenticated else "anonymous"
+        client_ip = request.META.get("REMOTE_ADDR")
+        user_agent = request.META.get("HTTP_USER_AGENT","")
+
+        lines = [
+            f"Method: {method}",
+            f"Path: {path}",
+            f"User: {user}",
+            f"Query params: {query_params}",
+            f"Client IP: {client_ip}",
+            f"User-Agent: {user_agent}",
+        ]
+        return HttpResponse("\n".join(lines), content_type="text/plain")
