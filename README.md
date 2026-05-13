@@ -84,3 +84,6 @@ change_form.js                  unusable_password_field.js
 core.js                         urlify.js
 filters.js                      vendor
 (.venv) divyashrestha@alunos292 js % 
+
+## adding page params
+![page params](images/Screenshot%202026-05-13%20at%2014.58.47.png)

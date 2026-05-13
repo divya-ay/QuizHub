@@ -5,6 +5,7 @@ class RequestExplorerView(View):
     def get(self, request):
     # query params: /shop/products/request -info/?page=2&order=desc
         query_params = dict(request.GET)
+        page = request.GET.get("page")
         method = request.method
         path = request.path
         user = request.user.username if request.user.is_authenticated else "anonymous"
@@ -16,6 +17,7 @@ class RequestExplorerView(View):
             f"Path: {path}",
             f"User: {user}",
             f"Query params: {query_params}",
+            f"Page param: {page}",
             f"Client IP: {client_ip}",
             f"User-Agent: {user_agent}",
         ]
