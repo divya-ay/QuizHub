@@ -90,4 +90,4 @@ filters.js                      vendor
 
 
 ### checking if the static page works fine
-![static page] (images/Screenshot 2026-05-14 at 18.23.05.png)
+![static page](images/Screenshot%202026-05-14%20at%2018.23.05.png)
