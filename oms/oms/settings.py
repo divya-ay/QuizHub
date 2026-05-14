@@ -40,6 +40,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'quizhub',
     'quizhub.quizzes',
+    "sass_processor",
+]
+
+SASS_PROCESSOR_ROOT = os.path.join(BASE_DIR, 'scss')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'node_modules/bootstrap/dist'),
+    SASS_PROCESSOR_ROOT,
+]
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "sass_processor.finders.CssFinder",
 ]
 
 MIDDLEWARE = [
