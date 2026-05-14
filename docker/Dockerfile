@@ -1,4 +1,7 @@
-FROM python:3-slim
+FROM python:3.12-slim
+RUN apt-get update && apt-get install -y nodejs npm && rm -rf /var/lib/apt/lists/*
+
+FROM python:3.12-slim
 WORKDIR /home/app/web
 ENV PYTHONDONTWRITEBYTECODE=1 \
 PYTHONUNBUFFERED=1 \
