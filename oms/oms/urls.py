@@ -21,7 +21,6 @@ from quizhub.views import hello_world
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("test/", hello_world, name="hello_world"),
-    path('', hello_world, name='home'),
     path("quizhub/", include("quizhub.urls")),
     path("", include("quizhub.urls")),
 ]

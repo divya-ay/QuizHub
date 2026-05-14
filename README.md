@@ -87,3 +87,7 @@ filters.js                      vendor
 
 ## adding page params
 ![page params](images/Screenshot%202026-05-13%20at%2014.58.47.png)
+
+
+### checking if the static page works fine
+![static page] (images/Screenshot 2026-05-14 at 18.23.05.png)
