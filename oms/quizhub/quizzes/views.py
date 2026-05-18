@@ -22,3 +22,13 @@ class RequestExplorerView(View):
             f"User-Agent: {user_agent}",
         ]
         return HttpResponse("\n".join(lines), content_type="text/plain")
+    
+class QuizListView(View):
+    def get(self, request):
+        quizzes = [
+            {"id": 1, "title": "General Knowledge Quiz"},
+            {"id": 2, "title": "Science Quiz"},
+            {"id": 3, "title": "History Quiz"},
+        ]
+        context = {"quizzes": quizzes}
+        return render(request, "quizzes/quiz_list.html", context)
