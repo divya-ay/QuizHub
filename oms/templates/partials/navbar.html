@@ -13,13 +13,7 @@
                     <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif%}" href="{% url 'quizhub:home' %}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'categories' %}active{% endif%}" href="{% url 'quizhub:categories' %}">Categories</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'leaderboard' %}active{% endif%}" href="{% url 'quizhub:leaderboard' %}">Leaderboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'daily_quiz' %}active{% endif%}" href="{% url 'quizhub:daily_quiz' %}">DailyQuiz</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'quiz_list' %}active{% endif %}"href="{% url 'quizhub:quiz_list' %}">Quizzes</a>
                 </li>
             </ul>
         </div>

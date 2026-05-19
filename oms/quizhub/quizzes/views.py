@@ -26,9 +26,9 @@ class RequestExplorerView(View):
 class QuizListView(View):
     def get(self, request):
         quizzes = [
-            {"id": 1, "title": "General Knowledge Quiz"},
-            {"id": 2, "title": "Science Quiz"},
-            {"id": 3, "title": "History Quiz"},
+            {"id": 1, "title": "General Knowledge Quiz", "category": "General"},
+            {"id": 2, "title": "Science Quiz", "category": "Science"},
+            {"id": 3, "title": "History Quiz", "category": "History"},
         ]
         context = {"quizzes": quizzes}
         return render(request, "quizzes/quiz_list.html", context)
