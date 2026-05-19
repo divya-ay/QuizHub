@@ -1,6 +1,6 @@
 from django.views import View
 from django.http import HttpResponse
-
+from django.shortcuts import render
 class RequestExplorerView(View):
     def get(self, request):
     # query params: /shop/products/request -info/?page=2&order=desc
