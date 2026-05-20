@@ -3,3 +3,5 @@
 .env.db
 __pycache__/
 staticfiles/ 
+/oms/node_modules
+/oms/staticfiles

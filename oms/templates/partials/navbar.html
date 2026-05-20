@@ -1,7 +1,7 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'quizhub:home' %}">OMS</a>
+        <a class="navbar-brand" href="{% url 'quizhub:home' %}">QuizHub</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-
             target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle
             navigation">
@@ -13,7 +13,7 @@
                     <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif%}" href="{% url 'quizhub:home' %}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'quiz_list' %}active{% endif %}"href="{% url 'quizhub:quiz_list' %}">Quizzes</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'quiz_list' %}active{% endif %}"href="{% url 'quizhub:quizzes:quiz_list' %}">Quizzes</a>
                 </li>
             </ul>
         </div>

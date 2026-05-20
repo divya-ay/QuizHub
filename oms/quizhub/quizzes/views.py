@@ -1,6 +1,7 @@
 from django.views import View
 from django.http import HttpResponse
 from django.shortcuts import render
+
 class RequestExplorerView(View):
     def get(self, request):
     # query params: /shop/products/request -info/?page=2&order=desc
@@ -31,4 +32,4 @@ class QuizListView(View):
             {"id": 3, "title": "History Quiz", "category": "History"},
         ]
         context = {"quizzes": quizzes}
-        return render(request, "quizzes/quiz_list.html", context)
+        return render(request, "quizzes/list.html", context)
