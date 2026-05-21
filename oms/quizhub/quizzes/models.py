@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 class Category(models.Model):
@@ -19,23 +21,98 @@ class Category(models.Model):
         return self.name
     
 class Quiz(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(
+        max_length=200
+    )
+
     description = models.TextField(blank=True)
+
     category = models.ForeignKey(
         Category,
-        on_delete=models.CASCADE, 
+        on_delete=models.CASCADE,
         related_name='quizzes'
     )
+
+    difficulty = models.CharField(
+        max_length=20,
+        choices=[
+            ('easy', 'Easy'),
+            ('medium', 'Medium'),
+            ('hard', 'Hard'),
+        ],
+        default='easy'
+    )
+
+    passing_score = models.PositiveIntegerField(
+        default=50,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(100)
+        ]
+    )
+
+    time_limit = models.PositiveIntegerField(
+        default=10,
+        validators=[MinValueValidator(1)],
+        help_text="Time limit in minutes"
+    )
+
     is_active = models.BooleanField(default=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['title']
 
+        constraints = [
+            models.UniqueConstraint(
+                fields=['title', 'category'],
+                name='unique_quiz_title_per_category'
+            ),
+
+            models.CheckConstraint(
+                check=models.Q(time_limit__gte=1),
+                name='time_limit_gte_1'
+            ),
+        ]
+
+    def clean(self):
+        if self.time_limit > 180:
+            raise ValidationError(
+                "Quiz time limit cannot exceed 180 minutes."
+            )
+
     def __str__(self):
         return self.title
     
+class Question(models.Model):
+    quiz = models.ForeignKey(
+        Quiz,
+        on_delete=models.CASCADE,
+        related_name='questions'
+    )
 
+    text = models.TextField()
+
+    points = models.PositiveIntegerField(
+        default=1,
+        validators=[MinValueValidator(1)]
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(points__gte=1),
+                name='question_points_gte_1'
+            )
+        ]
+
+    def __str__(self):
+        return self.text[:50]
+    
+    
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(unique=True)
