@@ -2,6 +2,11 @@ from django.views import View
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
+
+from django.urls import reverse_lazy
+from .models import Quiz, Category
+
 class RequestExplorerView(View):
     def get(self, request):
     # query params: /shop/products/request -info/?page=2&order=desc
@@ -33,3 +38,10 @@ class QuizListView(View):
         ]
         context = {"quizzes": quizzes}
         return render(request, "quizzes/list.html", context)
+    
+class CategoryAdminListView(ListView):
+    model = Category
+
+    template_name = "quizzes/category_list.html"
+
+    context_object_name = "categories"
