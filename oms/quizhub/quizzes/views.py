@@ -42,6 +42,13 @@ class QuizListView(View):
 class CategoryAdminListView(ListView):
     model = Category
 
-    template_name = "quizzes/category_list.html"
+    template_name = "quizzes/categories/admin_list.html"
 
     context_object_name = "categories"
+    paginate_by = 10
+
+class CategoryAdminCreateView(CreateView):
+    form_class = CategoryForm
+    template_name = "quizzes/categories/admin_form.html"
+    success_url = reverse_lazy("quizhub:quizzes:categories_admin")
+
