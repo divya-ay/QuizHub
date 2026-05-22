@@ -2,10 +2,11 @@ from django.views import View
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
+from django.views.generic import (ListView, CreateView, UpdateView, DeleteView)
 
 from django.urls import reverse_lazy
 from .models import Quiz, Category
+from .forms import CategoryForm
 
 class RequestExplorerView(View):
     def get(self, request):
@@ -52,3 +53,13 @@ class CategoryAdminCreateView(CreateView):
     template_name = "quizzes/categories/admin_form.html"
     success_url = reverse_lazy("quizhub:quizzes:categories_admin")
 
+class CategoryAdminUpdateView(UpdateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = "quizzes/categories/admin_form.html"
+    success_url = reverse_lazy("quizhub:quizzes:categories_admin")
+
+class CategoryAdminDeleteView(DeleteView):
+    model = Category
+    template_name = "quizzes/categories/admin_confirm_delete.html"
+    success_url = reverse_lazy("quizhub:quizzes:categories_admin")
