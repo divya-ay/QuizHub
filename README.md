@@ -91,3 +91,8 @@ filters.js                      vendor
 
 ### checking if the static page works fine
 ![static page](images/Screenshot%202026-05-14%20at%2018.23.05.png)
+
+
+### this is the current progress
+![administration](images/Screenshot%202026-05-23%20at%2016.00.00.png)
+![dropdown](images/Screenshot%202026-05-23%20at%2015.59.53.png)
