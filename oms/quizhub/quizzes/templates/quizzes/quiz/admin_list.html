@@ -3,7 +3,7 @@
 {% block content %}
 
     <h1> Quiz Management</h1>
-    <a href="{% url 'quizhub:quizzes:admin_quiz_add' %}" class="btn btn-primary mb-3">Add New Quiz</a>
+    <a href="{% url 'quizhub:quizzes:quiz_add' %}" class="btn btn-primary mb-3">Add New Quiz</a>
     {% if quizzes %} 
         <table class="admin-quiz-table table table-striped">
             <thead>
@@ -23,8 +23,8 @@
                         <td>{{quiz.is_active|yesno:"Active,Inactive"}}</td>
                         <td>{{quiz.created_at}}</td>
                         <td>
-                            <a href="{% url 'quizhub:quizzes:admin_quiz_edit' quiz.id %}" class="btn btn-sm btn-warning">Edit</a>
-                            <a href="{% url 'quizhub:quizzes:admin_quiz_delete' quiz.id %}" class="btn btn-sm btn-danger">Delete</a>
+                            <a href="{% url 'quizhub:quizzes:quiz_edit' quiz.id %}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{% url 'quizhub:quizzes:quiz_delete' quiz.id %}" class="btn btn-sm btn-danger">Delete</a>
                         </td>
                     </tr>
                 {% endfor %}

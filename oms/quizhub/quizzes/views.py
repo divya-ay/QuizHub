@@ -73,15 +73,15 @@ class QuizAdminListView(ListView):
 class QuizAdminCreateView(CreateView):
     form_class = QuizForm
     template_name = "quizzes/quiz/admin_form.html"
-    success_url = reverse_lazy("quizhub:quizzes:quiz_admin_list")
+    success_url = reverse_lazy("quizhub:quizzes:quiz_admin")
 
 class QuizAdminUpdateView(UpdateView):
     model = Quiz
     form_class = QuizForm
     template_name = "quizzes/quiz/admin_form.html"
-    success_url = reverse_lazy("quizhub:quizzes:quiz_admin_list")
+    success_url = reverse_lazy("quizhub:quizzes:quiz_admin")
 
 class QuizAdminDeleteView(DeleteView):
     model = Quiz
     template_name = "quizzes/quiz/admin_confirm_delete.html"
-    success_url = reverse_lazy("quizhub:quizzes:quiz_admin_list")
+    success_url = reverse_lazy("quizhub:quizzes:quiz_admin")
