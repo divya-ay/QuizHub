@@ -5,7 +5,7 @@
 {% block content %}
 
     <h1> Category Management</h1>
-    <a href="{% url 'quizhub:quizzes:admin_category_add' %}" class="btn btn-primary mb-3">Add New Category</a>
+    <a href="{% url 'quizhub:quizzes:category_add' %}" class="btn btn-primary mb-3">Add New Category</a>
     {% if categories %} 
         <table class="admin-category-table table table-striped">
             <thead>

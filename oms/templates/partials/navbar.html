@@ -15,6 +15,18 @@
                 <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'quiz_list' %}active{% endif %}"href="{% url 'quizhub:quizzes:quiz_list' %}">Quizzes</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Administration
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'quizhub:quizzes:categories_admin' %}">
+                                Manage Categories
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
