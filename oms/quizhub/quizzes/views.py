@@ -6,7 +6,7 @@ from django.views.generic import (ListView, CreateView, UpdateView, DeleteView)
 
 from django.urls import reverse_lazy
 from .models import Quiz, Category
-from .forms import CategoryForm
+from .forms import CategoryForm, QuizForm
 
 class RequestExplorerView(View):
     def get(self, request):
@@ -63,3 +63,25 @@ class CategoryAdminDeleteView(DeleteView):
     model = Category
     template_name = "quizzes/categories/admin_confirm_delete.html"
     success_url = reverse_lazy("quizhub:quizzes:categories_admin")
+
+class QuizAdminListView(ListView):
+    model = Quiz
+    template_name = "quizzes/quiz/admin_list.html"
+    context_object_name = "quizzes"
+    paginate_by = 10
+
+class QuizAdminCreateView(CreateView):
+    form_class = QuizForm
+    template_name = "quizzes/quiz/admin_form.html"
+    success_url = reverse_lazy("quizhub:quizzes:quiz_admin_list")
+
+class QuizAdminUpdateView(UpdateView):
+    model = Quiz
+    form_class = QuizForm
+    template_name = "quizzes/quiz/admin_form.html"
+    success_url = reverse_lazy("quizhub:quizzes:quiz_admin_list")
+
+class QuizAdminDeleteView(DeleteView):
+    model = Quiz
+    template_name = "quizzes/quiz/admin_confirm_delete.html"
+    success_url = reverse_lazy("quizhub:quizzes:quiz_admin_list")
