@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 
@@ -144,7 +145,7 @@ class QuizAttempt(models.Model):
     )
 
     user = models.ForeignKey(
-        'User',
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='quiz_attempts'
     )
@@ -185,7 +186,7 @@ class UserAnswer(models.Model):
     
 class UserStreak(models.Model):
     user = models.ForeignKey(
-        'User',
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='streaks'
     )
