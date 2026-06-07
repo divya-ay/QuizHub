@@ -159,3 +159,42 @@ class QuizAttempt(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.quiz.title} - {self.score}"
+    
+
+class UserAnswer(models.Model):
+    attempt = models.ForeignKey(
+        QuizAttempt,
+        on_delete=models.CASCADE,
+        related_name='answers'
+    )
+
+    question = models.ForeignKey(
+        Question,
+        on_delete=models.CASCADE
+    )
+
+    selected_choice = models.ForeignKey(
+        Choice,
+        on_delete=models.CASCADE
+    )
+
+    answered_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.attempt.user.username} - {self.question.id}"
+    
+class UserStreak(models.Model):
+    user = models.ForeignKey(
+        'User',
+        on_delete=models.CASCADE,
+        related_name='streaks'
+    )
+
+    current_streak = models.PositiveIntegerField(default=0)
+
+    longest_streak = models.PositiveIntegerField(default=0)
+
+    last_activity_date = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.username} - Current Streak: {self.current_streak} - Longest Streak: {self.longest_streak}"
