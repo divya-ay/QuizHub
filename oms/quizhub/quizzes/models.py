@@ -3,52 +3,56 @@ from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 
-# Create your models here.
+
 class Category(models.Model):
     name = models.CharField(
         max_length=100,
         unique=True,
         db_index=True,
-        help_text="Category_name"
+        help_text="Category name"
     )
+
     description = models.TextField(blank=True)
+
     is_active = models.BooleanField(default=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['name']
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
-    
+
+
 class Quiz(models.Model):
-    title = models.CharField(
-        max_length=200
-    )
+    DIFFICULTY_CHOICES = [
+        ("easy", "Easy"),
+        ("medium", "Medium"),
+        ("hard", "Hard"),
+    ]
+
+    title = models.CharField(max_length=200)
 
     description = models.TextField(blank=True)
 
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
-        related_name='quizzes'
+        related_name="quizzes"
     )
 
     difficulty = models.CharField(
         max_length=20,
-        choices=[
-            ('easy', 'Easy'),
-            ('medium', 'Medium'),
-            ('hard', 'Hard'),
-        ],
-        default='easy'
+        choices=DIFFICULTY_CHOICES,
+        default="easy"
     )
 
     passing_score = models.PositiveIntegerField(
         default=50,
         validators=[
             MinValueValidator(0),
-            MaxValueValidator(100)
+            MaxValueValidator(100),
         ]
     )
 
@@ -63,17 +67,17 @@ class Quiz(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['title']
+        ordering = ["title"]
 
         constraints = [
             models.UniqueConstraint(
-                fields=['title', 'category'],
-                name='unique_quiz_title_per_category'
+                fields=["title", "category"],
+                name="unique_quiz_title_per_category"
             ),
 
             models.CheckConstraint(
                 check=models.Q(time_limit__gte=1),
-                name='time_limit_gte_1'
+                name="time_limit_gte_1"
             ),
         ]
 
@@ -85,12 +89,13 @@ class Quiz(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+
 class Question(models.Model):
     quiz = models.ForeignKey(
         Quiz,
         on_delete=models.CASCADE,
-        related_name='questions'
+        related_name="questions"
     )
 
     text = models.TextField()
@@ -103,51 +108,71 @@ class Question(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        ordering = ["id"]
+
         constraints = [
             models.CheckConstraint(
                 check=models.Q(points__gte=1),
-                name='question_points_gte_1'
+                name="question_points_gte_1"
             )
         ]
 
     def __str__(self):
         return self.text[:50]
-    
-    
-class Tag(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    slug = models.SlugField(unique=True)
-    quizzes = models.ManyToManyField(Quiz, related_name='tags')
 
-    def __str__(self):
-        return self.name
-    
 
 class Choice(models.Model):
     question = models.ForeignKey(
         Question,
         on_delete=models.CASCADE,
-        related_name='choices'
+        related_name="choices"
     )
 
     text = models.CharField(max_length=255)
 
     is_correct = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ["id"]
+
     def __str__(self):
         return self.text
-    
+
+
+class Tag(models.Model):
+    name = models.CharField(
+        max_length=50,
+        unique=True
+    )
+
+    slug = models.SlugField(
+        unique=True
+    )
+
+    quizzes = models.ManyToManyField(
+        Quiz,
+        related_name="tags",
+        blank=True
+    )
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+
 class QuizAttempt(models.Model):
     quiz = models.ForeignKey(
         Quiz,
         on_delete=models.CASCADE,
-        related_name='attempts'
+        related_name="attempts"
     )
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='quiz_attempts'
+        related_name="quiz_attempts"
     )
 
     score = models.PositiveIntegerField(default=0)
@@ -156,17 +181,24 @@ class QuizAttempt(models.Model):
 
     started_at = models.DateTimeField(auto_now_add=True)
 
-    completed_at = models.DateTimeField(null=True, blank=True)
+    completed_at = models.DateTimeField(
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
-        return f"{self.user.username} - {self.quiz.title} - {self.score}"
-    
+        return (
+            f"{self.user.username} - "
+            f"{self.quiz.title} - "
+            f"{self.score}"
+        )
+
 
 class UserAnswer(models.Model):
     attempt = models.ForeignKey(
         QuizAttempt,
         on_delete=models.CASCADE,
-        related_name='answers'
+        related_name="answers"
     )
 
     question = models.ForeignKey(
@@ -182,20 +214,31 @@ class UserAnswer(models.Model):
     answered_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.attempt.user.username} - {self.question.id}"
-    
+        return (
+            f"{self.attempt.user.username} - "
+            f"Question {self.question.id}"
+        )
+
+
 class UserStreak(models.Model):
-    user = models.ForeignKey(
+    user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='streaks'
+        related_name="streak"
     )
 
     current_streak = models.PositiveIntegerField(default=0)
 
     longest_streak = models.PositiveIntegerField(default=0)
 
-    last_activity_date = models.DateField(null=True, blank=True)
+    last_activity_date = models.DateField(
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
-        return f"{self.user.username} - Current Streak: {self.current_streak} - Longest Streak: {self.longest_streak}"
+        return (
+            f"{self.user.username} "
+            f"(Current: {self.current_streak}, "
+            f"Longest: {self.longest_streak})"
+        )
