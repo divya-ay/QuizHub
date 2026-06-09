@@ -29,7 +29,13 @@ class RequestExplorerView(View):
             f"User-Agent: {user_agent}",
         ]
         return HttpResponse("\n".join(lines), content_type="text/plain")
-    
+
+class QuizListView(ListView):
+    model = Quiz
+    template_name = "quizzes/list.html"
+    context_object_name = "quizzes"
+    paginate_by = 10
+     
 class CategoryAdminListView(ListView):
     model = Category
 
