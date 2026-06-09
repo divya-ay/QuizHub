@@ -30,16 +30,6 @@ class RequestExplorerView(View):
         ]
         return HttpResponse("\n".join(lines), content_type="text/plain")
     
-class QuizListView(View):
-    def get(self, request):
-        quizzes = [
-            {"id": 1, "title": "General Knowledge Quiz", "category": "General"},
-            {"id": 2, "title": "Science Quiz", "category": "Science"},
-            {"id": 3, "title": "History Quiz", "category": "History"},
-        ]
-        context = {"quizzes": quizzes}
-        return render(request, "quizzes/list.html", context)
-    
 class CategoryAdminListView(ListView):
     model = Category
 
