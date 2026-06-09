@@ -9,5 +9,4 @@ urlpatterns = [
         include(("quizhub.quizzes.urls"), namespace="quizzes"),
     ),
     path("", HomePageView.as_view(), name="home"),
-    path("quizzes/", include("quizhub.quizzes.urls")),
 ]
