@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'quizhub',
     'quizhub.quizzes',
     "sass_processor",
+    "userauth",
 ]
 
 SASS_PROCESSOR_ROOT = os.path.join(BASE_DIR, 'scss')
