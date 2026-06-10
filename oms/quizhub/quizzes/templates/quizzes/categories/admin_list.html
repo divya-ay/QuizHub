@@ -25,8 +25,8 @@
                         <td>{{category.description}}</td>
                         <td>{{category.created_at}}</td>
                         <td>
-                            <a href="{% url 'quizhub:quizzes:admin_category_edit' category.id %}" class="btn btn-sm btn-warning">Edit</a>
-                            <a href="{% url 'quizhub:quizzes:admin_category_delete' category.id %}" class="btn btn-sm btn-danger">Delete</a>
+                            <a href="{% url 'quizhub:quizzes:category_edit' category.id %}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{% url 'quizhub:quizzes:category_delete' category.id %}" class="btn btn-sm btn-danger">Delete</a>
                         </td>
                     </tr>
                 {% endfor %}
