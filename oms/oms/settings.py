@@ -139,6 +139,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_URL = "userauth:login"
+LOGIN_REDIRECT_URL = "quizhub:home"
+LOGOUT_REDIRECT_URL = "userauth:home"
+
 DEBUG = int(os.getenv("DEBUG", 0))
 SECRET_KEY = str(os.getenv("SECRET_KEY", "unsafe-dev-secret"))
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS","*").split(",")
