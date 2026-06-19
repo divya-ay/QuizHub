@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}My Django App{% endblock %}</title>
+    {% block head %}{% endblock %}
     {% load sass_tags %}
     <link rel="stylesheet" href="{% sass_src 'custom.scss' %}">
  </head>
