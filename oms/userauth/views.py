@@ -1,7 +1,14 @@
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import AuthenticationForm
 
+class CustomAuthForm(AuthenticationForm):
+    error_messages = {
+        "invalid_login": "Wrong username or password. Please try again.",
+        "inactive": "This account is inactive.",
+    }
+
 class CustomLoginView(LoginView):
+    form_class = CustomAuthForm
     template_name = "userauth/login.html"
     redirect_authenticated_user = True
 
