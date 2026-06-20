@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Login | QuizHub{% endblock %}
+{% block title %}Sign Up | QuizHub{% endblock %}
 
 {% block header %}{% endblock %}
 
@@ -192,16 +192,6 @@
   font-size: 0.88rem;
 }
 
-.forgot-password {
-  display: inline-block;
-  color: var(--qh-blue-glow);
-  text-decoration: none;
-  font-size: 0.8rem;
-  transition: color 0.2s ease;
-  margin-top: 0.4rem;
-}
-.forgot-password:hover { color: var(--qh-spark); text-decoration: underline; }
-
 .login-footer {
   margin-top: 1.5rem;
   padding-top: 1.5rem;
@@ -283,6 +273,12 @@
 .feature-item:hover { color: var(--qh-blue-glow); transform: scale(1.06) rotate(-1deg); }
 .feature-item svg { margin-bottom: 0.5rem; display: block; margin-left: auto; margin-right: auto; }
 
+.form-help-text {
+  font-size: 0.75rem;
+  color: var(--qh-text-dim);
+  margin-top: 0.3rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mascot-stage,
   .mascot-stage.celebrate,
@@ -347,7 +343,7 @@
       </div>
 
       <div class="quiz-headline">QuizHub</div>
-      <p class="quiz-tagline">Test your knowledge.<br>Challenge your friends.<br>Master new topics.</p>
+      <p class="quiz-tagline">Join the community.<br>Test your knowledge.<br>Master new topics.</p>
 
       <div class="quiz-features">
         <div class="feature-item">
@@ -365,11 +361,11 @@
       </div>
     </div>
 
-    <div class="card login-card border-0" id="loginCard" {% if form.non_field_errors or form.username.errors or form.password.errors %}data-error="true"{% endif %}>
+    <div class="card login-card border-0" id="loginCard" {% if form.non_field_errors or form.username.errors or form.password1.errors or form.password2.errors %}data-error="true"{% endif %}>
       <div class="card-body p-4 p-md-5">
         <div class="login-eyebrow">Quizhub</div>
-        <h1 class="login-title">Welcome back.<br>Let's keep <span class="wiggle-word">going</span>.</h1>
-        <p class="login-subtitle">Sign in to pick up where you left off.</p>
+        <h1 class="login-title">Join the <span class="wiggle-word">fun.</span><br>Create your account.</h1>
+        <p class="login-subtitle">Sign up and start quizzing with thousands of learners.</p>
         <form method="post" novalidate>
           {% csrf_token %}
           {% if form.non_field_errors %}
@@ -384,23 +380,32 @@
                   <div class="invalid-feedback d-block">{{ form.username.errors }}</div>
               {% endif %}
           </div>
-          <div class="mb-4">
-              <label class="form-label" for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+          <div class="mb-3">
+              <label class="form-label" for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
               <div class="qh-input-wrap">
-                  {{ form.password }}
+                  {{ form.password1 }}
               </div>
-              {% if form.password.errors %}
-                  <div class="invalid-feedback d-block">{{ form.password.errors }}</div>
+              {% if form.password1.errors %}
+                  <div class="invalid-feedback d-block">{{ form.password1.errors }}</div>
               {% endif %}
-              <a href="#" class="forgot-password">Forgot your password?</a>
+              <small class="form-help-text">{{ form.password1.help_text|safe }}</small>
+          </div>
+          <div class="mb-4">
+              <label class="form-label" for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+              <div class="qh-input-wrap">
+                  {{ form.password2 }}
+              </div>
+              {% if form.password2.errors %}
+                  <div class="invalid-feedback d-block">{{ form.password2.errors }}</div>
+              {% endif %}
           </div>
           <div class="d-grid">
-              <button type="submit" class="btn btn-signin btn-lg">Sign in →</button>
+              <button type="submit" class="btn btn-signin btn-lg">Create account →</button>
           </div>
         </form>
 
         <div class="login-footer">
-          <p>Don't have an account? <a href="{% url 'userauth:signup' %}" class="signup-link">Create one</a></p>
+          <p>Already have an account? <a href="{% url 'userauth:login' %}" class="signup-link">Sign in</a></p>
         </div>
       </div>
     </div>
@@ -414,8 +419,7 @@
     var pupilR = document.getElementById('pupilR');
     var mascotStage = document.getElementById('mascotStage');
     var mouth = document.getElementById('mouth');
-    var usernameField = document.querySelector('#loginCard input[name="username"]');
-    var passwordField = document.querySelector('#loginCard input[name="password"]');
+    var passwordField = document.querySelector('#loginCard input[name="password2"]');
     var loginCard = document.getElementById('loginCard');
 
     function lookAt(xOffset) {
@@ -423,10 +427,6 @@
             pupilL.setAttribute('cx', 80 + xOffset);
             pupilR.setAttribute('cx', 120 + xOffset);
         }
-    }
-
-    if (usernameField) {
-        usernameField.addEventListener('focus', function () {});
     }
 
     if (passwordField) {
