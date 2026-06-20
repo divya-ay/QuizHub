@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="{% sass_src 'custom.scss' %}">
  </head>
  <body>
+    {% block header %}
     {% include "partials/header.html" %}
+    {% endblock %}
     <main class="container py-4">
       {% block content %}{% endblock %}
     </main>
