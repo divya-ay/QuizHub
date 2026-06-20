@@ -487,6 +487,11 @@
                   '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/>' +
                   '<circle cx="12" cy="12" r="3"/>' +
                   '</svg>';
+    var eyeSlashIcon = '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+                       '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/>' +
+                       '<circle cx="12" cy="12" r="3"/>' +
+                       '<path d="M4 4l16 16" stroke="currentColor" stroke-width="1.8" fill="none"/>' +
+                       '</svg>';
     var toggleButtons = document.querySelectorAll('.qh-password-toggle');
     toggleButtons.forEach(function(button) {
         button.addEventListener('click', function(e) {
@@ -496,7 +501,7 @@
             if (inputField) {
                 var isPassword = inputField.type === 'password';
                 inputField.type = isPassword ? 'text' : 'password';
-                this.innerHTML = eyeIcon;
+                this.innerHTML = isPassword ? eyeSlashIcon : eyeIcon;
                 this.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
             }
         });
