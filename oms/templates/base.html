@@ -3,20 +3,323 @@
  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}My Django App{% endblock %}</title>
+    <title>{% block title %}QuizHub{% endblock %}</title>
     {% block head %}{% endblock %}
-    {% load sass_tags %}
+    {% load sass_tags static %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% sass_src 'custom.scss' %}">
+    <style>
+      :root {
+        --bg: #07020f;
+        --surface: rgba(17, 13, 46, 0.94);
+        --border: rgba(255, 255, 255, 0.12);
+        --text: #f8f9ff;
+        --muted: #abb1c7;
+        --primary: #ff5f7a;
+        --primary-soft: rgba(255, 95, 122, 0.18);
+        --accent: #8d7aff;
+        --accent-soft: rgba(141, 122, 255, 0.16);
+        --highlight: #35f5ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: 'Inter', sans-serif;
+        color: var(--text);
+        background: radial-gradient(circle at 20% 10%, rgba(255, 95, 122, 0.16), transparent 15%),
+                    radial-gradient(circle at 80% 25%, rgba(141, 122, 255, 0.14), transparent 18%),
+                    linear-gradient(160deg, #07020f 0%, #0c0920 32%, #130f36 100%);
+        overflow-x: hidden;
+      }
+
+      a {
+        color: var(--accent);
+      }
+
+      a:hover,
+      a:focus {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      .quizhub-main {
+        min-height: calc(100vh - 96px);
+        padding: 2.25rem 0 3rem;
+      }
+
+      .quizhub-content {
+        width: min(1240px, calc(100% - 3rem));
+        max-width: 1260px;
+        margin: 0 auto;
+        padding: 1rem 0;
+        position: relative;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .hero-stage {
+        display: grid;
+        gap: 2rem;
+        padding: 1rem 0 2rem;
+      }
+
+      .hero-panel {
+        position: relative;
+        overflow: hidden;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 1.8rem;
+        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.24);
+        backdrop-filter: blur(14px);
+      }
+
+      .hero-panel::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(140deg, rgba(141, 122, 255, 0.05), transparent 40%);
+        pointer-events: none;
+      }
+
+      .hero-panel > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65rem;
+        padding: 0.55rem 0.95rem;
+        border-radius: 999px;
+        background: rgba(255, 95, 122, 0.12);
+        color: #ffd6ea;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        font-size: 0.76rem;
+        font-weight: 700;
+      }
+
+      .hero-title {
+        margin: 1rem 0 1rem;
+        font-size: clamp(2.8rem, 5vw, 4.4rem);
+        line-height: 1.01;
+      }
+
+      .hero-copy {
+        margin: 0 0 1.75rem;
+        color: rgba(248, 249, 255, 0.84);
+        max-width: 62rem;
+        font-size: 1.05rem;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .hero-actions .btn {
+        min-width: 160px;
+      }
+
+      .hero-features {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.25rem;
+        margin-top: 1.5rem;
+      }
+
+      .feature-tile {
+        padding: 1.4rem;
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 1.35rem;
+      }
+
+      .feature-tile h3 {
+        margin: 0 0 0.65rem;
+        font-size: 1.05rem;
+      }
+
+      .feature-tile p {
+        margin: 0;
+        color: rgba(248, 249, 255, 0.72);
+        font-size: 0.95rem;
+      }
+
+      .quizhub-navbar {
+        min-height: 72px;
+        background: linear-gradient(180deg, rgba(16, 10, 49, 0.98), rgba(12, 9, 33, 0.98));
+        border-bottom: 1px solid rgba(255, 95, 122, 0.18);
+        box-shadow: 0 26px 70px rgba(8, 6, 28, 0.28);
+        backdrop-filter: blur(20px);
+      }
+
+      .navbar-brand {
+        font-family: 'Space Grotesk', sans-serif;
+        letter-spacing: 0.18em;
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: transparent !important;
+        background: linear-gradient(120deg, #ff7a92, #a887ff, #35f5ff);
+        background-size: 240%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        text-transform: uppercase;
+      }
+
+      .brand-mark {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 1rem;
+        background: rgba(61, 139, 255, 0.18);
+        color: var(--primary);
+        font-size: 0.95rem;
+        font-weight: 800;
+      }
+
+      .brand-chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.2rem 0.65rem;
+        margin-left: 0.8rem;
+        border-radius: 999px;
+        background: rgba(61, 139, 255, 0.12);
+        color: #8fd3ff;
+        font-size: 0.68rem;
+        letter-spacing: 0.18em;
+      }
+
+      .navbar-dark .navbar-nav .nav-link {
+        color: rgba(255, 255, 255, 0.88) !important;
+        font-weight: 600;
+        padding: 0.6rem 0.9rem;
+        border-radius: 0.9rem;
+        transition: color 0.2s ease, background 0.2s ease;
+      }
+
+      .navbar-dark .navbar-nav .nav-link:hover,
+      .navbar-dark .navbar-nav .nav-link.active {
+        color: #ffffff !important;
+        background: rgba(255, 95, 122, 0.24);
+        text-shadow: 0 0 10px rgba(255, 95, 122, 0.20);
+      }
+
+      .navbar-toggler {
+        border: 1px solid rgba(255, 95, 122, 0.20);
+        border-radius: 0.85rem;
+        width: 46px;
+        height: 46px;
+        background: rgba(255, 95, 122, 0.1);
+      }
+
+      .navbar-toggler-icon {
+        filter: brightness(1.8);
+      }
+
+      .btn-quiz {
+        background: linear-gradient(135deg, #ff6b7d, #8d7aff);
+        border: none;
+        color: #fff;
+        font-weight: 700;
+        box-shadow: 0 18px 32px rgba(255, 107, 125, 0.24);
+      }
+
+      .btn-quiz:hover {
+        background: linear-gradient(135deg, #8d7aff, #ff6b7d);
+      }
+
+      .btn-outline-quiz {
+        color: #ffffff;
+        border: 1px solid rgba(255, 95, 122, 0.28);
+        background: rgba(255, 95, 122, 0.08);
+      }
+
+      .btn-outline-quiz:hover {
+        background: rgba(255, 95, 122, 0.16);
+        border-color: rgba(255, 95, 122, 0.4);
+      }
+
+      .dropdown-menu {
+        background: rgba(12, 8, 34, 0.98);
+        border: 1px solid rgba(255, 95, 122, 0.22);
+        border-radius: 1rem;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.28);
+      }
+
+      .dropdown-item {
+        color: var(--text) !important;
+      }
+
+      .dropdown-item:hover,
+      .dropdown-item:focus {
+        background: rgba(255, 95, 122, 0.14);
+        color: #ffd1ea !important;
+      }
+
+      .text-muted {
+        color: var(--muted) !important;
+      }
+
+      @media (max-width: 992px) {
+        .quizhub-content {
+          width: calc(100% - 1.5rem);
+          padding: 0.75rem 0;
+          border-radius: 0;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .quizhub-main {
+          padding: 1.5rem 0 2.5rem;
+        }
+
+        .quizhub-content {
+          width: calc(100% - 1rem);
+          padding: 1.5rem;
+          border-radius: 1.4rem;
+        }
+
+        .navbar-nav {
+          gap: 0.35rem;
+        }
+
+        .quizhub-navbar {
+          padding-top: 0.4rem;
+          padding-bottom: 0.4rem;
+        }
+      }
+    </style>
  </head>
  <body>
     {% block header %}
     {% include "partials/header.html" %}
     {% endblock %}
-    <main class="container py-4">
-      {% block content %}{% endblock %}
+    <main class="quizhub-main">
+      <div class="quizhub-content">
+        {% block content %}{% endblock %}
+      </div>
     </main>
     {% include "partials/footer.html" %}
-    {% load static %}
     <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
  </body>
 </html>
